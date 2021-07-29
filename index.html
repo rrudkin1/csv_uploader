@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.1/papaparse.min.js"></script>
     <link rel="stylesheet" href="style.css" />
     <title>CSV Upload</title>
@@ -10,10 +11,9 @@
   <body>
     <div class="button-container">
       <input class="file-input" id="CSV" type="file" accept=".csv">
-      <button class="btn" id="processFilesButton">Process Files</button>
-    </div>
-    <div class="status-bar" id="status-bar">
-      <h4>Upload Status...</h4>
+      <button class="process-btn" id="processFilesButton">
+        Process Files
+      </button>
     </div>
     <script src="script.js"></script>
   </body>
