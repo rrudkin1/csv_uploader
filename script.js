@@ -34,3 +34,11 @@
     }
 
     readFileEx.addEventListener('click', readFile);
+
+
+
+//test for file type 
+        if(baseInput.value.split('.').pop() != 'csv' || billedInput.value.split('.').pop() != 'csv') {
+            alert('please upload valid csv files')
+            window.location = '/';
+        };
