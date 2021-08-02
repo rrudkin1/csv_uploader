@@ -13,7 +13,7 @@
                 // if(Object.entries(results.data[0]).length === 18) {
                     processButton.classList.remove('fail');
                     processButton.classList.add('success');
-                    processButton.innerHTML = '<i class="fas fa-check"></i> Success';
+                    processButton.innerHTML = 'Success';
                     // processButton.innerHTML = 
                     console.log('Results:');
                     console.log(results);
@@ -21,9 +21,9 @@
                 } else {
                     processButton.classList.remove('success');
                     processButton.classList.add('fail');
-                    processButton.innerHTML = '<i class="fas fa-times"></i> Failed';
+                    processButton.innerHTML = 'Failed';
                 
-                setTimeout(function() { alert("It looks like you uploaded the wrong file... Make sure you are loading a .csv file, and make sure to upload the base list and billed list in the correct locations."); }, 500);
+                setTimeout(function() { alert("It looks like you uploaded the wrong file. Make sure you are loading a .csv file, and make sure to upload the base list and billed list in the correct locations."); }, 500);
 
                 setTimeout(function() { processButton.classList.remove('fail'), processButton.innerHTML = 'Process Files'; }, 4000);
                 }

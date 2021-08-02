@@ -39,6 +39,13 @@ body {
   justify-content: center;
 }
 
+.process-btn.fail::before {
+  content: '\f00d';
+  font-family: 'Font Awesome 5 Free';
+  margin-right: 10px;
+  font-size: 1rem;
+}
+
 .process-btn.success {
   background-color: white;
   /* color: rgb(0, 121, 71); */
@@ -47,4 +54,11 @@ body {
   font-weight: bold;
   font-size: 14px;
   justify-content: center;
+}
+
+.process-btn.success::before {
+  content: '\f00c';
+  font-family: 'Font Awesome 5 Free';
+  margin-right: 10px;
+  font-size: 1rem;
 }
