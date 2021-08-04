@@ -27,38 +27,55 @@
                     returnedData = results; 
                     // console.log(returnedData.data[0].Account);
                     
-                    const newArr = new Map();
-                    newArr.set(returnedData.data[0].Account, returnedData.data[0]);
-                    newArr.set(returnedData.data[1].Account, returnedData.data[1]);
-                    newArr.set(returnedData.data[2].Account, returnedData.data[2]);
-                    newArr.set(returnedData.data[3].Account, returnedData.data[3]);
-                    newArr.set(returnedData.data[4].Account, returnedData.data[4]);
-
-                    console.log(newArr);
-
-                    let arrLength = newArr.length;
-
-                    let arrTable = '<table>' +
-                                '<tr>' +
-                                 '<th>Account</th>' +
-                                 '<th>AccountName</th>' +
-                                 '<th>TotalAccountValue</th>' +
-                                '</tr>';
-                    
-                    for(i = 0; i < arrLength; i++) {
-                        arrTable += '<tr>' +
-                                     '<td>' + newArr[i].Account + '</td>' +
-                                     '<td>' + newArr[i].AccountName + '</td>' +
-                                     '<td>' + newArr[i].TotalAccountValue + '</td>' + 
-                                    '<tr>'
+                    const newObjArr = new Map();
+                    for(i = 0; i < 10; i++) {
+                        newObjArr.set(i, returnedData.data[i]);
                     }
 
-                    console.log(arrTable);
+                    console.log(newObjArr);
+                    console.log(newObjArr.size);
+                    console.log(newObjArr.get(1));
+                    console.log(newObjArr.get(1).Account);
 
-                    document.getElementById('myTable').innerHTML = arrTable;
-                    
-                }
-            },
+                    createTable(newObjArr);
+
+                    function createTable(data) {
+                        let table = document.getElementById('myTable');
+                        
+                        table.innerHTML = `
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Account No.</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Value</th>
+                                        <th scope="col">Delete</th>
+                                    </tr>
+                                <thead>
+                                <tbody id="myTableBody">
+
+                                </tbody>
+                            </table>
+                        `;
+
+                        for(i = 0; i < data.size; i++) {
+                            $('#myTableBody').append(`<tr>
+                                            <td>${data.get(i).Account}</td>
+                                            <td>${data.get(i).AccountName}</td>
+                                            <td>${data.get(i).TotalAccountValue}</td>
+                                            <td><button class="delete-button" id='deleteRowBtn'><i class="fas fa-times"></i></button></td>
+                                       </tr>`
+                            )};
+                        }
+                        
+                        // const deleteBtn = document.getElementById('deleteRowBtn');
+
+                        document.querySelectorAll('delete-button').addEventListener('click', () => {
+                            console.log(newObjArr)
+                        });
+                    }
+                },
+
                 header: true, 
                 skipEmptyLines: 'greedy',
                 transform: dataRegex,
