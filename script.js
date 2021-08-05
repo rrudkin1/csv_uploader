@@ -27,17 +27,34 @@
                     returnedData = results; 
                     // console.log(returnedData.data[0].Account);
                     
-                    const newObjArr = new Map();
+                    // const newArrObjs = new Map();
+                    // for(i = 0; i < 10; i++) {
+                    //     newArrObjs.set(i, returnedData.data[i]);
+                    // }
+                    const newArrObjs = [];
                     for(i = 0; i < 10; i++) {
-                        newObjArr.set(i, returnedData.data[i]);
+                        newArrObjs.push(returnedData.data[i]);
                     }
 
-                    console.log(newObjArr);
-                    console.log(newObjArr.size);
-                    console.log(newObjArr.get(1));
-                    console.log(newObjArr.get(1).Account);
+                    let acctVals = [];
+                    for(i = 0; i < newArrObjs.length; i++) {
+                        acctVals.push(parseFloat(newArrObjs[i].TotalAccountValue));
+                    }
 
-                    createTable(newObjArr);
+                    let summedActVals = acctVals.reduce((a, b) => a + b, 0);
+
+                    console.log(newArrObjs);
+                    console.log(newArrObjs.length);
+                    console.log(newArrObjs[1]);
+                    console.log(newArrObjs[1].Account);
+                    console.log(acctVals);
+                    console.log(summedActVals);
+                    
+                    createTable(newArrObjs);
+
+                    function deleteObject(dltBtn) {
+                        
+                    }
 
                     function createTable(data) {
                         let table = document.getElementById('myTable');
@@ -58,23 +75,25 @@
                             </table>
                         `;
 
-                        for(i = 0; i < data.size; i++) {
+                        for(i = 0; i < data.length; i++) {
                             $('#myTableBody').append(`<tr>
-                                            <td>${data.get(i).Account}</td>
-                                            <td>${data.get(i).AccountName}</td>
-                                            <td>${data.get(i).TotalAccountValue}</td>
-                                            <td><button class="delete-button" id='deleteRowBtn'><i class="fas fa-times"></i></button></td>
-                                       </tr>`
-                            )};
+                                    <td>${data[i].Account}</td>
+                                    <td>${data[i].AccountName}</td>
+                                    <td>${data[i].TotalAccountValue}</td>
+                                    <td><button class="delete-button" id='deleteRowBtn'><i class="fas fa-times"></i></button></td>
+                                </tr>
+                            `);
                         }
-                        
-                        // const deleteBtn = document.getElementById('deleteRowBtn');
 
-                        document.querySelectorAll('delete-button').addEventListener('click', () => {
-                            console.log(newObjArr)
-                        });
-                    }
-                },
+                        $('#myTableBody').append(`
+                            <tr>
+                                <td colspan="2"><strong>Total missed account value:</strong></td>
+                                <td colspan="2"><strong>${summedActVals}</strong></td>
+                            </tr>
+                        `);
+                    }      
+                }
+             },
 
                 header: true, 
                 skipEmptyLines: 'greedy',
@@ -97,3 +116,4 @@
     }
 
     readFileEx.addEventListener('click', readFile);
+
