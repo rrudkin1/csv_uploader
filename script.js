@@ -25,36 +25,18 @@
                     processButton.classList.add('success');
                     processButton.innerHTML = 'Success';
                     returnedData = results; 
-                    // console.log(returnedData.data[0].Account);
-                    
-                    // const newArrObjs = new Map();
-                    // for(i = 0; i < 10; i++) {
-                    //     newArrObjs.set(i, returnedData.data[i]);
-                    // }
+
                     const newArrObjs = [];
                     for(i = 0; i < 10; i++) {
                         newArrObjs.push(returnedData.data[i]);
-                    }
-
-                    let acctVals = [];
-                    for(i = 0; i < newArrObjs.length; i++) {
-                        acctVals.push(parseFloat(newArrObjs[i].TotalAccountValue));
-                    }
-
-                    let summedActVals = acctVals.reduce((a, b) => a + b, 0);
-
-                    console.log(newArrObjs);
-                    console.log(newArrObjs.length);
-                    console.log(newArrObjs[1]);
-                    console.log(newArrObjs[1].Account);
-                    console.log(acctVals);
-                    console.log(summedActVals);
+                    };
                     
-                    createTable(newArrObjs);
+                    // console.log(newArrObjs);
+                    // console.log(newArrObjs.length);
+                    // console.log(newArrObjs[1]);
+                    // console.log(newArrObjs[1].Account);
 
-                    function deleteObject(dltBtn) {
-                        
-                    }
+                    createTable(newArrObjs);
 
                     function createTable(data) {
                         let table = document.getElementById('myTable');
@@ -82,15 +64,34 @@
                                     <td>${data[i].TotalAccountValue}</td>
                                     <td><button class="delete-button" id='deleteRowBtn'><i class="fas fa-times"></i></button></td>
                                 </tr>
-                            `);
-                        }
+                                `);
+                            }
+                            
+                            function sumOfColumns(myTable, columnIndex) {
+                                var tot = 0;
+                                $(myTable).find("tr").children("td:nth-child(" + columnIndex + ")")
+                                .each(function() {
+                                    $this = $(this);
+                                    if (!$this.hasClass("sum") && $this.html() != "") {
+                                        tot += parseFloat($this.html());
+                                    }
+                                });
 
-                        $('#myTableBody').append(`
+                                $("#myTable").on('click', '.delete-button', function() {
+                                    $(this).closest('tr').remove();
+                                    console.log(sumOfColumns('#myTable', 3));
+                                });
+
+                                return tot;
+                            }
+                                                        
+                            $('#myTableBody').append(`
                             <tr>
                                 <td colspan="2"><strong>Total missed account value:</strong></td>
-                                <td colspan="2"><strong>${summedActVals}</strong></td>
+                                <td colspan="2"><strong>${sumOfColumns('#myTable', 3)}</strong></td>
                             </tr>
                         `);
+
                     }      
                 }
              },
