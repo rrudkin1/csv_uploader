@@ -30,8 +30,21 @@
                     for(i = 0; i < 10; i++) {
                         arrOfObjs.push(returnedData.data[i]);
                     };
-                    
+
+                    let totalValArray = [];
+                    for(i = 0; i < arrOfObjs.length; i++ ) {
+                        totalValArray.push(Number(arrOfObjs[i].TotalAccountValue));
+                    }
+
+                    let totalVal = 0
+                    for(i = 0; i < totalValArray.length; i++) {
+                        totalVal += totalValArray[i];
+                    }
+           
                     console.log(arrOfObjs);
+                    console.log(totalValArray);
+                    console.log(totalValArray.length);
+                    console.log(totalVal);
                     // console.log(arrOfObjs.length);
                     // console.log(arrOfObjs[1]);
                     // console.log(arrOfObjs[1].Account);
@@ -61,22 +74,14 @@
                             $('#myTableBody').append(`<tr>
                                     <td>${data[i].Account}</td>
                                     <td>${data[i].AccountName}</td>
-                                    <td>${data[i].TotalAccountValue}</td>
+                                    <td>${new Intl.NumberFormat('us-US', { style: 'currency', currency: 'USD' }).format(data[i].TotalAccountValue)}</td>
                                     <td><button class="delete-button" id='deleteRowBtn'><i class="fas fa-times"></i></button></td>
                                 </tr>
                                 `);
                             }
                             
-                        function sumOfColumns(myTable, columnIndex) {                                
-                            var tot = 0;
-                            $(myTable).find("tr").children("td:nth-child(" + columnIndex + ")")
-                            .each(function() {
-                                $this = $(this);
-                                if (!$this.hasClass("sum") && $this.html() != "") {
-                                    tot += parseFloat($this.html());
-                                }
-                            });
-                            
+                            let totalValArray = [];
+                            let totalVal = 0
                             $("#myTable").on('click', '.delete-button', function() {
                                 let getID = $(this).closest('tr').find('td:first');
                                 let acctNum = getID[0].outerText;
@@ -86,30 +91,27 @@
                                         };
                                     };
 
-                                createTable(arrOfObjs);
+                                    for(i = 0; i < arrOfObjs.length; i++ ) {
+                                        totalValArray.push(Number(arrOfObjs[i].TotalAccountValue));
+                                    }
+                
+                                    for(i = 0; i < totalValArray.length; i++) {
+                                        totalVal += totalValArray[i];
+                                    }
 
-                                let totalValArray = [];
-                                for(i = 0; i < arrOfObjs.length; i++) {
-                                    totalValArray.push(arrOfObjs[i].TotalAccountValue);
-                                    };
-
-                                console.log(totalValArray);
+                                    createTable(arrOfObjs);
                                 
+                                    $('#myTableBody').append(`
+                                    <tr>
+                                        <td colspan="2"><strong>Total missed account value:</strong></td>
+                                        <td colspan="2"><strong>${new Intl.NumberFormat('us-US', { style: 'currency', currency: 'USD' }).format(totalVal)}</strong></td>
+                                    </tr>
+                                    `);
                                 }
-                            );
-                            
-                            return tot.toFixed(2);
+                                );                               
+                            };   
                         };
-                                                        
-                        $('#myTableBody').append(`
-                        <tr>
-                            <td colspan="2"><strong>Total missed account value:</strong></td>
-                            <td colspan="2"><strong>${new Intl.NumberFormat('us-US', { style: 'currency', currency: 'USD' }).format(sumOfColumns('#myTable', 3))}</strong></td>
-                        </tr>
-                    `);
-                };   
-            };
-         },
+                  },
 
                 header: true, 
                 skipEmptyLines: 'greedy',
