@@ -41,13 +41,9 @@
                         totalVal += totalValArray[i];
                     }
            
-                    console.log(arrOfObjs);
-                    console.log(totalValArray);
-                    console.log(totalValArray.length);
-                    console.log(totalVal);
-                    // console.log(arrOfObjs.length);
-                    // console.log(arrOfObjs[1]);
-                    // console.log(arrOfObjs[1].Account);
+                    // console.log(arrOfObjs);
+                    // console.log(totalValArray);
+                    // console.log(totalVal);
 
                     createTable(arrOfObjs);
 
@@ -75,48 +71,47 @@
                                     <td>${data[i].Account}</td>
                                     <td>${data[i].AccountName}</td>
                                     <td>${new Intl.NumberFormat('us-US', { style: 'currency', currency: 'USD' }).format(data[i].TotalAccountValue)}</td>
-                                    <td><button class="delete-button" id='deleteRowBtn'><i class="fas fa-times"></i></button></td>
+                                    <td><button class="delete-button" id='deleteRowBtn'><i class="fas fa-times"></i></button></td> 
                                 </tr>
                                 `);
                             }
                             
-                            let totalValArray = [];
-                            let totalVal = 0
+                        let totalValArray = [];
+                        let totalVal = 0
                             $("#myTable").on('click', '.delete-button', function() {
                                 let getID = $(this).closest('tr').find('td:first');
                                 let acctNum = getID[0].outerText;
                                 for(i = 0; i < arrOfObjs.length; i++) {
                                     if(arrOfObjs[i].Account == acctNum) {
                                         arrayOfObjs = arrOfObjs.splice(i, 1);
-                                        };
                                     };
-
-                                    for(i = 0; i < arrOfObjs.length; i++ ) {
-                                        totalValArray.push(Number(arrOfObjs[i].TotalAccountValue));
-                                    }
-                
-                                    for(i = 0; i < totalValArray.length; i++) {
-                                        totalVal += totalValArray[i];
-                                    }
-
-                                    createTable(arrOfObjs);
+                                };
                                 
-                                    $('#myTableBody').append(`
-                                    <tr>
-                                        <td colspan="2"><strong>Total missed account value:</strong></td>
-                                        <td colspan="2"><strong>${new Intl.NumberFormat('us-US', { style: 'currency', currency: 'USD' }).format(totalVal)}</strong></td>
-                                    </tr>
-                                    `);
+                                for(i = 0; i < arrOfObjs.length; i++ ) {
+                                    totalValArray.push(Number(arrOfObjs[i].TotalAccountValue));
                                 }
-                                );                               
-                            };   
-                        };
-                  },
+                                
+                                for(i = 0; i < totalValArray.length; i++) {
+                                    totalVal += totalValArray[i];
+                                }
+                                
+                                createTable(arrOfObjs);
+                                
+                                $('#myTableBody').append(`
+                                <tr>
+                                    <td colspan="2"><strong>Total missed account value:</strong></td>
+                                    <td colspan="2"><strong>${new Intl.NumberFormat('us-US', { style: 'currency', currency: 'USD' }).format(totalVal)}</strong></td>
+                                </tr>
+                            `);
+                        }
+                    )};                               
+                };   
+            },
 
-                header: true, 
-                skipEmptyLines: 'greedy',
-                transform: dataRegex,
-                transformHeader: (h) => {return h.replaceAll(/\s/g, '');}
+            header: true, 
+            skipEmptyLines: 'greedy',
+            transform: dataRegex,
+            transformHeader: (h) => {return h.replaceAll(/\s/g, '');}
         });
     };
 
