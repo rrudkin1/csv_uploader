@@ -32,8 +32,8 @@ body {
 .process-btn.fail {
   background-color: white;
   /* color: hsla(0, 95%, 34%, 0.877); */
-  color: darkblue;
-  border-color: darkblue;
+  color: #b71c1c;
+  border-color: #b71c1c;
   font-weight: bold;
   font-size: 14px;
   justify-content: center;
@@ -49,8 +49,8 @@ body {
 .process-btn.success {
   background-color: white;
   /* color: rgb(0, 121, 71); */
-  color: darkblue;
-  border-color: darkblue;
+  color: #388e3c;
+  border-color: #388e3c;
   font-weight: bold;
   font-size: 14px;
   justify-content: center;
