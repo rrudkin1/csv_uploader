@@ -1,6 +1,7 @@
 var csv = document.getElementById('CSV')
 var readFileEx = document.getElementById('processFilesButton')
 var processButton = document.querySelector('.process-btn')
+var downloadBtn = document.querySelector('.download-report-btn')
 
 function readFile() {
   Papa.parse(csv.files[0], {
@@ -95,6 +96,10 @@ function readFile() {
         }
 
         createTable(arrOfObjs)
+
+        downloadBtn.addEventListener('click', () => {
+          console.log(arrOfObjs)
+        })
 
         $('#myTable').on('click', '.delete-button', function () {
           let getID = $(this).closest('tr').find('td:first')
