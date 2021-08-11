@@ -49,10 +49,6 @@ function readFile() {
 
         let totalVal = totalValArray.reduce((a, b) => a + b, 0)
 
-        // console.log(arrOfObjs)
-        // console.log(totalValArray)
-        // console.log(totalVal)
-
         function createTable(data) {
           let table = document.getElementById('myTable')
 
@@ -80,15 +76,17 @@ function readFile() {
                                       style: 'currency',
                                       currency: 'USD',
                                     }).format(data[i].TotalAccountValue)}</td>
-                                    <td><button class="delete-button" id='deleteRowBtn'><i class="fas fa-times"></i></button></td> 
+                                    <td><button class="delete-button" id='deleteRowBtn' style="border:none; background-color:transparent;"><i class="fas fa-times" style="color:red; "></i></i>
+                                    </i>
+                                    </i></button></td> 
                                 </tr>
                                 `)
           }
 
           $('#myTableBody').append(`
                             <tr>
-                                <td colspan="2"><strong>Total missed account value:</strong></td>
-                                <td colspan="2"><strong>${new Intl.NumberFormat(
+                                <td colspan="2" style="text-align:left"><strong>Total missed account value:</strong></td>
+                                <td colspan="2" style="text-align:left"><strong>${new Intl.NumberFormat(
                                   'us-US',
                                   { style: 'currency', currency: 'USD' }
                                 ).format(totalVal)}</strong></td>
@@ -109,17 +107,11 @@ function readFile() {
 
           let totalValArray = []
 
-          console.log(arrOfObjs)
-          console.log(arrOfObjs.length)
-          // console.log(totalValArray)
-
           for (i = 0; i < arrOfObjs.length; i++) {
             totalValArray.push(Number(arrOfObjs[i].TotalAccountValue))
           }
-          console.log(totalValArray)
 
           totalVal = totalValArray.reduce((a, b) => a + b, 0)
-          console.log(totalVal)
 
           createTable(arrOfObjs)
         })

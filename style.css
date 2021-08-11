@@ -62,3 +62,8 @@ body {
   margin-right: 10px;
   font-size: 1rem;
 }
+
+th,
+td {
+  text-align: center;
+}
