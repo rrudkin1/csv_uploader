@@ -49,9 +49,9 @@ function readFile() {
 
         let totalVal = totalValArray.reduce((a, b) => a + b, 0)
 
-        console.log(arrOfObjs)
-        console.log(totalValArray)
-        console.log(totalVal)
+        // console.log(arrOfObjs)
+        // console.log(totalValArray)
+        // console.log(totalVal)
 
         function createTable(data) {
           let table = document.getElementById('myTable')
@@ -107,13 +107,21 @@ function readFile() {
             }
           }
 
+          let totalValArray = []
+
+          console.log(arrOfObjs)
+          console.log(arrOfObjs.length)
+          // console.log(totalValArray)
+
           for (i = 0; i < arrOfObjs.length; i++) {
             totalValArray.push(Number(arrOfObjs[i].TotalAccountValue))
           }
-
-          createTable(arrOfObjs)
+          console.log(totalValArray)
 
           totalVal = totalValArray.reduce((a, b) => a + b, 0)
+          console.log(totalVal)
+
+          createTable(arrOfObjs)
         })
       }
     },
