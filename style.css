@@ -63,6 +63,15 @@ body {
   font-size: 1rem;
 }
 
+.delete-button {
+  border: none;
+  background-color: transparent;
+}
+
+.fas.fa-times {
+  color: red;
+}
+
 th,
 td {
   text-align: center;

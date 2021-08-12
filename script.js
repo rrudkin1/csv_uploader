@@ -3,43 +3,61 @@ var readFileEx = document.getElementById('processFilesButton');
 var processButton = document.querySelector('.process-btn');
 var downloadBtn = document.querySelector('.download-report-btn');
 
+function failFileType() {
+  processButton.classList.remove('success');
+  processButton.classList.add('fail');
+  processButton.innerHTML = 'Failed';
+  setTimeout(function () {
+    alert(
+      'It looks like you may have uploaded the wrong file type. Make sure to upload .csv files only.'
+    );
+  }, 500);
+  setTimeout(function () {
+    window.location = '/';
+  }, 4000);
+}
+
+function failUploadLoc() {
+  processButton.classList.remove('success');
+  processButton.classList.add('fail');
+  processButton.innerHTML = 'Failed';
+  setTimeout(function () {
+    alert(
+      'It looks like you may have uploaded your file(s) in the wrong location. Make sure to upload the base list and billed list in the correct locations.'
+    );
+  }, 500);
+  setTimeout(function () {
+    window.location = '/';
+  }, 4000);
+}
+
+function successProcess() {
+  processButton.classList.remove('fail');
+  processButton.classList.add('success');
+  processButton.innerHTML = 'Success';
+}
+
+let dltActNum = '';
+$('#myTable').on('click', '.delete-button', function () {
+  dltActNum = $(this).attr('value');
+  console.log(dltActNum);
+});
+
 function readFile() {
   Papa.parse(csv.files[0], {
     complete: function (results) {
       if (csv.value.split('.').pop() != 'csv') {
-        processButton.classList.remove('success');
-        processButton.classList.add('fail');
-        processButton.innerHTML = 'Failed';
-        setTimeout(function () {
-          alert(
-            'It looks like you may have uploaded the wrong file type. Make sure to upload .csv files only.'
-          );
-        }, 500);
-        setTimeout(function () {
-          window.location = '/';
-        }, 4000);
+        failFileType();
       } else if (results.data[0].hasOwnProperty('Fee')) {
-        // if(Object.entries(results.data[0]).length === 18) {
-        processButton.classList.remove('success');
-        processButton.classList.add('fail');
-        processButton.innerHTML = 'Failed';
-        setTimeout(function () {
-          alert(
-            'It looks like you may have uploaded your file(s) in the wrong location. Make sure to upload the base list and billed list in the correct locations.'
-          );
-        }, 500);
-        setTimeout(function () {
-          window.location = '/';
-        }, 4000);
+        failUploadLoc();
       } else {
-        // RR: if passes both tests = success
-        processButton.classList.remove('fail');
-        processButton.classList.add('success');
-        processButton.innerHTML = 'Success';
+        successProcess();
         returnedData = results;
 
+        //function formatResults()
         let arrOfObjs = [];
         for (i = 0; i < 10; i++) {
+          if (returnedData.data[i] === dltActNum) continue;
           arrOfObjs.push(returnedData.data[i]);
         }
 
@@ -77,7 +95,9 @@ function readFile() {
                                       style: 'currency',
                                       currency: 'USD',
                                     }).format(data[i].TotalAccountValue)}</td>
-                                    <td><button class="delete-button" id='deleteRowBtn' style="border:none; background-color:transparent;"><i class="fas fa-times" style="color:red; "></i></i>
+                                    <td><button class="delete-button" id="deleteRowBtn" value=${
+                                      data[i].Account
+                                    }><i class="fas fa-times"></i></i>
                                     </i>
                                     </i></button></td> 
                                 </tr>
@@ -102,15 +122,14 @@ function readFile() {
         });
 
         $('#myTable').on('click', '.delete-button', function () {
-          let getID = $(this).closest('tr').find('td:first');
-          let acctNum = getID[0].outerText;
+          dltActNum = $(this).attr('value');
           for (i = 0; i < arrOfObjs.length; i++) {
-            if (arrOfObjs[i].Account == acctNum) {
+            if (arrOfObjs[i].Account == dltActNum) {
               arrayOfObjs = arrOfObjs.splice(i, 1);
             }
           }
 
-          let totalValArray = [];
+          totalValArray = [];
 
           for (i = 0; i < arrOfObjs.length; i++) {
             totalValArray.push(Number(arrOfObjs[i].TotalAccountValue));
