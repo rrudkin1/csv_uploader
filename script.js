@@ -4,6 +4,7 @@ var processButton = document.querySelector('.process-btn');
 var downloadBtn = document.querySelector('.download-report-btn');
 let newArray = [];
 let newObjsList = [];
+let downloadedReport;
 
 function readFile() {
   Papa.parse(csv.files[0], {
@@ -67,11 +68,11 @@ function createArray(r) {
   }
 }
 
-function formatResults(arrOfObjs) {
+function formatResults(arr) {
   newObjsList = newArray;
   let totalValArray = [];
-  for (i = 0; i < arrOfObjs.length; i++) {
-    totalValArray.push(Number(arrOfObjs[i].TotalAccountValue));
+  for (i = 0; i < arr.length; i++) {
+    totalValArray.push(Number(arr[i].TotalAccountValue));
   }
 
   let totalVal = totalValArray.reduce((a, b) => a + b, 0);
@@ -93,16 +94,16 @@ function formatResults(arrOfObjs) {
                     </table>
                 `;
 
-  for (i = 0; i < arrOfObjs.length; i++) {
+  for (i = 0; i < arr.length; i++) {
     $('#myTableBody').append(`<tr>
-                            <td>${arrOfObjs[i].Account}</td>
-                            <td>${arrOfObjs[i].AccountName}</td>
+                            <td>${arr[i].Account}</td>
+                            <td>${arr[i].AccountName}</td>
                             <td>${new Intl.NumberFormat('us-US', {
                               style: 'currency',
                               currency: 'USD',
-                            }).format(arrOfObjs[i].TotalAccountValue)}</td>
+                            }).format(arr[i].TotalAccountValue)}</td>
                             <td><button class="delete-button" id="deleteRowBtn" value=${
-                              arrOfObjs[i].Account
+                              arr[i].Account
                             }><i class="fas fa-times"></i></i>
                             </i>
                             </i></button></td> 
@@ -155,6 +156,27 @@ function removeDeletedAcct(acct) {
 downloadBtn.addEventListener('click', () => {
   console.log('Here is the corrected list of missed accounts:');
   console.log(newObjsList);
+  downloadedReport = Papa.unparse(newObjsList, { header: true });
+  console.log(downloadedReport);
+
+  var blob = new Blob([downloadedReport], { type: 'text/csv;charset=utf-8;' });
+  if (navigator.msSaveBlob) {
+    // IE 10+
+    navigator.msSaveBlob(blob, filename);
+  } else {
+    var link = document.createElement('a');
+    if (link.download !== undefined) {
+      // feature detection
+      // Browsers that support HTML5 download attribute
+      var url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', filename);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  }
 });
 
 readFileEx.addEventListener('click', readFile);
