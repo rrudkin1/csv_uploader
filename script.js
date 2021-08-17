@@ -159,15 +159,15 @@ downloadBtn.addEventListener('click', () => {
   downloadedReport = Papa.unparse(newObjsList, { header: true });
   console.log(downloadedReport);
 
-  var downloadLink = document.createElement("a");
-  var blob = new Blob(["\ufeff", downloadedReport]);
+  var downloadLink = document.createElement('a');
+  var blob = new Blob(['\ufeff', downloadedReport]);
   var url = URL.createObjectURL(blob);
   downloadLink.href = url;
-  downloadLink.download = "missedAccounts.csv";
+  downloadLink.download = 'missedAccounts.csv';
 
   document.body.appendChild(downloadLink);
   downloadLink.click();
-  document.body.removeChild(downloadLink)
+  document.body.removeChild(downloadLink);
 });
 
 readFileEx.addEventListener('click', readFile);
