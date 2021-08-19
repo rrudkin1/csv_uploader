@@ -2,6 +2,7 @@ var csv = document.getElementById('CSV');
 var readFileEx = document.getElementById('processFilesButton');
 var processButton = document.querySelector('.process-btn');
 var downloadBtn = document.querySelector('.download-report-btn');
+let formattedCsvArr = [];
 let newArray = [];
 let newObjsList = [];
 let downloadedReport;
@@ -11,21 +12,56 @@ function readFile() {
     complete: function (results) {
       if (csv.value.split('.').pop() != 'csv') {
         failFileType();
-      } else if (results.data[0].hasOwnProperty('Fee')) {
-        failUploadLoc();
       } else {
-        successProcess();
-        createArray(results);
-        formatResults(newArray);
+        results.data.shift();
+        results.data.splice(results.data.length - 2, 2);
+        formattedCsvArr = Papa.unparse(results, { header: false });
+        // console.log(formattedCsvArr);
+        Papa.parse(formattedCsvArr, {
+          complete: function (results) {
+            console.log(results);
+            if (results.data[0].hasOwnProperty('Fee')) {
+              failUploadLoc();
+            } else {
+              successProcess();
+              createArray(results);
+              formatResults(newArray);
+            }
+          },
+          header: true,
+          skipEmptyLines: 'greedy',
+          transform: dataRegex,
+          transformHeader: (h) => {
+            return h.replaceAll(/\s/g, '');
+          },
+        });
       }
     },
-    header: true,
+    header: false,
     skipEmptyLines: 'greedy',
-    transform: dataRegex,
-    transformHeader: (h) => {
-      return h.replaceAll(/\s/g, '');
-    },
   });
+
+  // console.log(formattedCsvArr);
+
+  // Papa.parse(csv.files[0], {
+  //   complete: function (results) {
+  //     if (csv.value.split('.').pop() != 'csv') {
+  //       failFileType();
+  //     } else if (results.data[0].hasOwnProperty('Fee')) {
+  //       failUploadLoc();
+  //     } else {
+  //       successProcess();
+  //       createArray(results);
+  //       formatResults(newArray);
+  //     }
+  //   },
+  //   header: true,
+  //   skipEmptyLines: 'greedy',
+  //   transform: dataRegex,
+  //   transformHeader: (h) => {
+  //     return h.replaceAll(/\s/g, '');
+  //   },
+  // });
 }
 
 function failFileType() {
