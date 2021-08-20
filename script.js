@@ -13,15 +13,14 @@ function readFile() {
       if (csv.value.split('.').pop() != 'csv') {
         failFileType();
       } else {
-        results.data.shift();
-        results.data.splice(results.data.length - 2, 2);
-        formattedCsvArr = Papa.unparse(results, { header: false });
-        // console.log(formattedCsvArr);
+        formatCSV(results);
         Papa.parse(formattedCsvArr, {
           complete: function (results) {
             console.log(results);
-            if (results.data[0].hasOwnProperty('Fee')) {
+            if (!results.data[0].hasOwnProperty('Account')) {
               failUploadLoc();
+            } else if (results.data[0].hasOwnProperty('Fee')) {
+              failUploadLoc;
             } else {
               successProcess();
               createArray(results);
@@ -40,28 +39,6 @@ function readFile() {
     header: false,
     skipEmptyLines: 'greedy',
   });
-
-  // console.log(formattedCsvArr);
-
-  // Papa.parse(csv.files[0], {
-  //   complete: function (results) {
-  //     if (csv.value.split('.').pop() != 'csv') {
-  //       failFileType();
-  //     } else if (results.data[0].hasOwnProperty('Fee')) {
-  //       failUploadLoc();
-  //     } else {
-  //       successProcess();
-  //       createArray(results);
-  //       formatResults(newArray);
-  //     }
-  //   },
-  //   header: true,
-  //   skipEmptyLines: 'greedy',
-  //   transform: dataRegex,
-  //   transformHeader: (h) => {
-  //     return h.replaceAll(/\s/g, '');
-  //   },
-  // });
 }
 
 function failFileType() {
@@ -76,6 +53,12 @@ function failFileType() {
   setTimeout(function () {
     window.location = '/';
   }, 4000);
+}
+
+function formatCSV(r) {
+  r.data.shift();
+  r.data.splice(r.data.length - 2, 2);
+  formattedCsvArr = Papa.unparse(r, { header: false });
 }
 
 function failUploadLoc() {
