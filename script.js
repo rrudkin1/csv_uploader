@@ -16,7 +16,6 @@ function readFile() {
         formatCSV(results);
         Papa.parse(formattedCsvArr, {
           complete: function (results) {
-            console.log(results);
             if (!results.data[0].hasOwnProperty('Account')) {
               failUploadLoc();
             } else if (results.data[0].hasOwnProperty('Fee')) {
